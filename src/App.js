@@ -58,16 +58,25 @@ function Search() {
     return <input className="search" type="text" placeholder="Search movies..." value={query} onChange={(e) => setQuery(e.target.value)} />;
 }
 
-function NumResults() {
+function NumResults({ movies }) {
     return (
         <p className="num-results">
-            Found <strong>x</strong> results
+            Found <strong>{movies.length}</strong> results
         </p>
     );
 }
 
-function MovieList() {
-    const [movies, setMovies] = useState(tempMovieData);
+function NavBar({ movies }) {
+    return (
+        <nav className="nav-bar">
+            <Logo />
+            <Search />
+            <NumResults movies={movies} />
+        </nav>
+    );
+}
+
+function MovieList({ movies }) {
     const [isOpen1, setIsOpen1] = useState(true);
 
     return (
@@ -95,7 +104,7 @@ function MovieList() {
     );
 }
 
-function WatchedList() {
+function WatchedList({ movies }) {
     const [watched, setWatched] = useState(tempWatchedData);
     const [isOpen2, setIsOpen2] = useState(true);
 
@@ -159,19 +168,21 @@ function WatchedList() {
     );
 }
 
+function Main({ movies }) {
+    return (
+        <main className="main">
+            <MovieList movies={movies} />
+            <WatchedList movies={movies} />
+        </main>
+    );
+}
+
 export default function App() {
+    const [movies, setMovies] = useState(tempMovieData);
     return (
         <>
-            <nav className="nav-bar">
-                <Logo />
-                <Search />
-                <NumResults />
-            </nav>
-
-            <main className="main">
-                <MovieList />
-                <WatchedList />
-            </main>
+            <NavBar movies={movies} />
+            <Main movies={movies} />
         </>
     );
 }
